@@ -4,7 +4,7 @@ const os = require("os");
 
 var default_options = {
 	logger: {
-		default_types: ["error","info"],
+		types: ["error","info"],
 		format: { date: {show: false}, type: {show: false} },
 		outputs: [{file: "stdout"}]
 	}
@@ -29,12 +29,12 @@ function Logger(options) {
 				this.opts.logger.format.type &&
 				this.opts.logger.format.type.show;
 	
-	var outputs = this.opts.logger.outputs;
-	if ( !outputs ) {
-		outputs = default_options.logger.outputs;
+	if ( !this.opts.logger.outputs ) {
+		this.opts.logger.outputs = default_options.logger.outputs;
 	}
+	var outputs = this.opts.logger.outputs;
 
-	var default_types = this.opts.logger.default_types || default_options.logger.default_types;
+	var default_types = this.opts.logger.types || default_options.logger.types;
 	for(index in outputs) {
 		if (outputs[index].file == "stdout") {
 			this.opts.logger.outputs[index].stream = process.stdout;

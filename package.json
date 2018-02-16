@@ -1,6 +1,6 @@
 {
   "name": "primitive_logger",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Very simple Logger",
   "main": "logger.js",
   "scripts": {
@@ -16,9 +16,13 @@
     "log",
 	"logger"
   ],
+  "files": [
+	"logger.js",
+	"test.js"
+  ],
   "repository": {
 	"type": "git",
 	"url": "https://github.com/viksicom/primitive_logger.git"
   },
-  "license": "GPL"
+  "license": "GPL-3.0"
 }

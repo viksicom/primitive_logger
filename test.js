@@ -1,9 +1,8 @@
 const lr = require('./logger.js')
-const Logger = lr.Logger
 
 var options = {
 	logger: {
-		default_types: ["stats","error"],
+		types: ["stats","error"],
 		format: { 
 			date: {show: true},
 			type: {show: true}
@@ -19,7 +18,10 @@ var options = {
 	}
 }
 
-logger = new Logger(options);
+logger = new lr.Logger({logger: {types: ["troubleshoot"]}});
+
+logger.log("troubleshoot", "This is troubleshoot message. Should see it.");
+logger.log("debug", "This debug message should not print");
 
 logger.stats("This is stats message "+options);
 logger.info("This is info message");

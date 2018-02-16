@@ -18,12 +18,13 @@ npm install --save primitive_logger
 ```
 
 ```javascript
+// Example 1
 const lr = require('primitive_logger')
 const Logger = lr.Logger
 
 var options = {
 	logger: {
-		default_types: ["stats","error"],
+		types: ["stats","error"],
 		format: { 
 			date: {show: true},
 			type: {show: true}
@@ -47,6 +48,16 @@ logger.error("This is error message");
 logger.log("debug","This is debug message");
 logger.debug("This is another debug message");
 logger.log("whatever","This is whatever message");
+```
+
+```
+// Example 2. Display only custom message "troubleshoot" in console
+const lr = require('primitive_logger')
+
+logger = new lr.Logger({logger: {types: ["troubleshoot"]}});
+
+logger.log("troubleshoot", "This is troubleshoot message. Should see it.");
+logger.log("debug", "This debug message should not print");
 ```
 
 ## log( type, message )
@@ -79,7 +90,7 @@ Shortcut for messages of type "stats"
 
 * `options` The options object can be passed to the new Logger() constructor.
    * `logger` - encapsulates all logger configurations
-	   * `default_types` - Message types to process, if they are not specified for individual outputs. This setting is optional. If not given, the fallback is ["error","info"]
+	   * `types` - Message types to process, if they are not specified for individual outputs. This setting is optional. If not given, the fallback is ["error","info"]
 	   * `format` - At the moment, the message formatting is limited to either show or hide the date/time and the type indicator. Default: false (meaning hide all)
 	   * `outputs` - A list of output files. 
 			* `file` - A filename for output. Keyword `"stdout"` means console output. If you provide the full path, it will be used as given, but directory should already exist. Default: `"stdout"`

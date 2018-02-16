@@ -1,10 +1,12 @@
 # Primitive Logger
 
-A very simple logger module. 
+A very simple logger module. It works with text messages and doesn't do any formatting when objects are included into string.
 
-Will output messages only if their types are listed in the options. There is no any relationship between any message types. 
+Instead of usual log levels, this logger uses message types. There is no relationship between message types, which means that you have to explicitly specify types that you want to see in the output. Also I did add few convenience functions for generic message types, there is no restriction on custom types. You can create any type that you like and, as long as it is listed in the options, logger will work with it.
 
-Can write messages to the console or/and to the log file(s).
+Logger can write messages to the console or/and to the log file(s). To write to console, use keyword "stdout" for the filename in the list of outputs.
+
+You can define individual list of message types for each output file. 
 
 
 ## Usage
@@ -21,11 +23,19 @@ const Logger = lr.Logger
 
 var options = {
 	logger: {
-		types: ["stats","error"],
+		default_types: ["stats","error"],
 		format: { 
-			date: {show: true}
+			date: {show: true},
+			type: {show: true}
 		},
-		outputs: ["stdout", "output.log"]
+		outputs: [
+			{	file: "stdout",
+				types: ["error","stats"]
+			},
+			{	file: "output.log", 
+				types: ["stats","error","info","debug"]
+			}
+		]
 	}
 }
 
@@ -69,7 +79,8 @@ Shortcut for messages of type "stats"
 
 * `options` The options object can be passed to the new Logger() constructor.
    * `logger` - encapsulates all logger configurations
-	   * `types` - tbd
-	   * `format` - tbd
-	   * `outputs` - tbd
-
+	   * `default_types` - Message types to process, if they are not specified for individual outputs. This setting is optional. If not given, the fallback is ["error","info"]
+	   * `format` - At the moment, the message formatting is limited to either show or hide the date/time and the type indicator. Default: false (meaning hide all)
+	   * `outputs` - A list of output files. 
+			* `file` - A filename for output. Keyword `"stdout"` means console output. If you provide the full path, it will be used as given, but directory should already exist. Default: `"stdout"`
+			* `types` - optional list of types that will be processed for this file. If not given, default_types setting will be used.

@@ -4,11 +4,9 @@ const os = require("os");
 
 var default_options = {
 	logger: {
-		types: ["stats","error","info"],
-		format: { 
-			date: {show: false}
-		},
-		outputs: ["stdout"]
+		default_types: ["error","info"],
+		format: { date: {show: false}, type: {show: false} },
+		outputs: [{file: "stdout"}]
 	}
 }
 
@@ -23,21 +21,32 @@ function Logger(options) {
 		this.types = [];
 	}
 	
+	this.showDate = this.opts.logger.format && 
+			this.opts.logger.format.date && 
+			this.opts.logger.format.date.show;
+	
+	this.showType = this.opts.logger.format &&
+				this.opts.logger.format.type &&
+				this.opts.logger.format.type.show;
+	
 	var outputs = this.opts.logger.outputs;
 	if ( !outputs ) {
 		outputs = default_options.logger.outputs;
 	}
-	
-	this.outStreams = [];
+
+	var default_types = this.opts.logger.default_types || default_options.logger.default_types;
 	for(index in outputs) {
-		if (outputs[index] == "stdout") {
-			this.outStreams.push(process.stdout);
+		if (outputs[index].file == "stdout") {
+			this.opts.logger.outputs[index].stream = process.stdout;
 		} else {
 			try {
-				this.outStreams.push(fs.createWriteStream(outputs[index], {flags: 'a'}));
+				this.opts.logger.outputs[index].stream = fs.createWriteStream(outputs[index].file, {flags: 'a'});
 			} catch (err) {
 				console.log( err );
 			}
+		}
+		if ( !this.opts.logger.outputs[index].types ) {
+			this.opts.logger.outputs[index].types = default_types;
 		}
 	}
 }
@@ -59,15 +68,21 @@ Logger.prototype.debug = function (message) {
 }
 
 Logger.prototype.log = function (type, message) {
-	if ( this.types.indexOf( type ) > -1 ) {
-		if ( this.opts.logger.format && 
-			 this.opts.logger.format.date && 
-			 this.opts.logger.format.date.show ) {
-			var prefix = new Date().toLocaleString();
-			message = prefix+" "+message;
-		}
-		for ( indx in this.outStreams ) {
-			this.outStreams[indx].write(message+os.EOL);
+	message = this._getPrefix(type)+message;
+	for ( index in this.opts.logger.outputs ) {
+		if ( this.opts.logger.outputs[index].types.indexOf( type ) > -1 ) {
+			this.opts.logger.outputs[index].stream.write(message+os.EOL);
 		}
 	}
+}
+
+Logger.prototype._getPrefix = function (type) {
+	var prefix = "";
+	if ( this.showDate ) {
+		prefix = new Date().toLocaleString()+" ";
+	}
+	if ( this.showType ) {
+		prefix = prefix+"["+type+"] ";
+	}
+	return prefix;
 }

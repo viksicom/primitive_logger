@@ -1,5 +1,5 @@
 {
-  "name": "Primitive Logger",
+  "name": "primitive_logger",
   "version": "1.0.0",
   "description": "Very simple Logger",
   "main": "logger.js",

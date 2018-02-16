@@ -18,7 +18,7 @@ npm install --save primitive_logger
 ```
 
 ```javascript
-const lr = require('./logger.js')
+const lr = require('primitive_logger')
 const Logger = lr.Logger
 
 var options = {

@@ -50,7 +50,7 @@ logger.debug("This is another debug message");
 logger.log("whatever","This is whatever message");
 ```
 
-```
+```javascript
 // Example 2. Display only custom message "troubleshoot" in console
 const lr = require('primitive_logger')
 

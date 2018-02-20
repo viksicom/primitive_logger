@@ -2,7 +2,7 @@ exports.Logger = Logger
 const fs = require('fs');
 const os = require("os");
 
-var default_options = {
+const default_options = {
 	logger: {
 		types: ["error","info"],
 		format: { date: {show: false}, type: {show: false} },

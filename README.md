@@ -1,6 +1,6 @@
 # Primitive Logger
 
-A very simple logger module. It works with text messages and doesn't do any formatting when objects are included into string.
+A very simple logger module intended for use by a short running utilities.
 
 Instead of usual log levels, this logger uses message types. There is no relationship between message types, which means that you have to explicitly specify types that you want to see in the output. Also I did add few convenience functions for generic message types, there is no restriction on custom types. You can create any type that you like and, as long as it is listed in the options, logger will work with it.
 
@@ -8,6 +8,10 @@ Logger can write messages to the console or/and to the log file(s). To write to 
 
 You can define individual list of message types for each output file. 
 
+What this logger doesn't do at this time:
+ *  If objects are included into string, it doesn't convert such objects into text.
+ *  There is no provision for rotating or limiting size of the log files.
+ *  There are no options to customize date and type outputs
 
 ## Usage
 

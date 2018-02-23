@@ -14,7 +14,7 @@ function Logger(options) {
 	if( options && options.logger ) {
 		this.opts = options;
 	} else {
-		this.opts = default_options;
+		this.opts = JSON.parse(JSON.stringify(default_options));
 	}
 	this.types = this.opts.logger.types;
 	if ( !this.types ) {
@@ -30,11 +30,11 @@ function Logger(options) {
 				this.opts.logger.format.type.show;
 	
 	if ( !this.opts.logger.outputs ) {
-		this.opts.logger.outputs = default_options.logger.outputs;
+		this.opts.logger.outputs = JSON.parse(JSON.stringify(default_options.logger.outputs));
 	}
 	var outputs = this.opts.logger.outputs;
 
-	var default_types = this.opts.logger.types || default_options.logger.types;
+	var default_types = this.opts.logger.types || JSON.parse(JSON.stringify(default_options.logger.types));
 	for(index in outputs) {
 		if (outputs[index].file == "stdout") {
 			this.opts.logger.outputs[index].stream = process.stdout;
